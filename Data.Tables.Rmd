@@ -1,0 +1,208 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+Load libraries
+```{r}
+library(data.table)
+library(dplyr)
+library(readr)
+```
+```{r}
+library(tidyverse)
+```
+
+Load data
+```{r}
+df <- read.csv('Data/cumulative_co2_emissions_tonnes.csv', check.names = FALSE)
+dt <- fread('Data/cumulative_co2_emissions_tonnes.csv')
+```
+show data
+```{r}
+head(df, 10)
+```
+
+```{r}
+names(df)
+```
+
+```{r}
+testdf <- read_csv('Data/pokemon.csv')
+head(testdf, 10)
+```
+```{r}
+testdf %>% filter(Attack > 100) %>% arrange(desc(Attack)) %>% top_n(10)
+```
+```{r}
+testdt <- fread('Data/pokemon.csv')
+head(testdt, 10)
+```
+```{r}
+testdt[Attack > 100][order(desc(Attack))]
+```
+```{r}
+testdt[Attack > 100 ,val:= Attack + Defense][]
+```
+
+```{r}
+testdt <- NULL
+```
+Disadvantage/Advantage Better memory usage because you dont duplicate the dataframe by an operations but if you make a mistake, you must reload the data.
+```{r}
+testdt[,meanX := mean(Attack+Defense)][]
+```
+```{r}
+asdf <- testdt[order(-Attack), .("Pokemon" = Name, "Verteidigung " = Defense)]
+```
+```{r}
+head(asdf)
+```
+```{r}
+asdf1 <- testdt[order(-Attack), c("Name", "Defense")]
+head(asdf1)
+```
+
+```{r}
+groupPoke <- testdt[,.(.N), by = "Type 1"]
+head(groupPoke)
+```
+
+```{r}
+groupPoke1 <- testdt[, .("sum" = .N, "meanAttack" = mean(Attack), "meanDefense" = mean(Defense)) , keyby = c("Type 1", "Legendary")]
+show(groupPoke1)
+```
+```{r}
+matchestest <- testdt[,!c("Name")]
+show(matchestest)
+```
+```{r}
+xx <- testdt[,matches("Na")]
+```
+```{r}
+library(tidyselect)
+```
+```{r}
+xx <- testdt[,.(matches(c("asdf"))]
+head(xx)
+```
+The data understanding and data preparation are important steps in the crips-dm model. you will spend most of your time to get informations from the data, clean it or create new features for your machine learning model. Therefore you want to do this task efficiently. At this point data.tables comes in and tries to save your time by smaller code lines and faster computing. furthermore data.tables has a better memory usage. Disadvantages are the unreadable code...
+There exist 
+![alt text here](CRISP-DM_Process_Diagram1.png)
+```{r}
+xx <- testdt[Generation == 1, lapply(.SD, mean), by = c("Type 1"), .SDcols = c("Attack", "Defense"),,,]
+```
+```{r}
+print(xx)
+```
+```{r}
+yy <- testdt[Generation == 2],
+head(yy),
+```
+```{r}
+library(data.table)
+dt <- fread('Data/games.csv')
+show(dt)
+```
+```{r}
+df <- read_csv('Data/games.csv')
+df %>% select(winner, white_id, black_id)
+```
+```{r}
+dt[turns <= 10, .(white_id, black_id, winner, turns)]
+```
+```{r}
+df %>% select(playerWhite = white_id, playerBlack = black_id, winner, turns) %>% filter(turns <= 10) %>% arrange(desc(turns))
+```
+```{r}
+dt_chess <- dt[turns <= 10,.(white_id, black_id, winner, turns)][order(-turns)]
+show(dt_chess)
+```
+```{r}
+dt_chess <- dt[, .('count' = .N, 'groupNumber' = .GRP), by = opening_name][order(-count)]
+show(dt_chess)
+```
+```{r}
+show(dt)
+```
+```{r}
+df %>% group_by(opening_name) %>% summarise(count = n())  %>% { mutate(ungroup(.), groupNumber = group_indices(.,opening_name)) } %>% arrange(desc(count))
+```
+```{r}
+dt_chess <- dt[, lapply(.SD, mean), by=opening_name, .SDcols = c("white_rating", "black_rating", "turns")]
+show(dt_chess)
+```
+```{r}
+columnList <- c('white_rating', 'black_rating', 'turns')
+df_chess <- df %>% select(.dots = columnList) %>% summarise_all(mean)
+
+show(df_chess)
+```
+```{r}
+dt_chess <- dt[, c('sum', 'mean') := list(sum(turns), mean(black_rating))]
+show(dt_chess)
+```
+```{r}
+show(dt)
+```
+```{r}
+customMedian <- function(x){
+  x <- sort(x)
+  y <- length(x) 
+  if((y%%2) != 0)
+    return (x[(y/2)+1])
+  
+  result <- (x[y / 2] +  x[(y / 2)+1]) / 2
+  
+  return(result)
+}
+```
+```{r}
+customMedian(c(2,4,7,8,9,10,11))
+```
+```{r}
+dt_chess <- dt[rated == TRUE, list('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))]
+```
+```{r}
+show(dt_chess)
+```
+```{r}
+df %>% filter(rated == TRUE)  %>% summarise('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))
+```
+```{r}
+dt_chess <- dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating", "black_rating")][order(-white_rating)][,'delta' := white_rating - black_rating]
+
+show(dt_chess)
+```
+```{r}
+show(dt_chess)
+```
+```{r}
+df %>% filter(rated == TRUE)  %>% summarise('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))
+```
+```{r}
+df_chess <- df %>% group_by(opening_name) %>% summarise(white_rating = mean(white_rating), black_rating = mean(black_rating)) %>% arrange(desc(white_rating)) %>% mutate(delta = white_rating - black_rating)
+show(df_chess)
+```
+
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+

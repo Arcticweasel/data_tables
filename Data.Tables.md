@@ -26,6 +26,7 @@ and in general in the whole data science (crips_dm) process.
 
 ![Crisp-DM](CRISP-DM_Process_Diagram1.png)  
 Cross industry standard process - data mining
+
 Basics
 ====================================
 Data.Tables is a powerful library for data preperation.
@@ -45,6 +46,7 @@ The main goal is to make the process overall faster and use the resources more e
 ## Benchmark
 
 [![Benchmark](Benchmark.png)](https://h2oai.github.io/db-benchmark/)
+
 Syntax
 =======================================================
 ## Basic

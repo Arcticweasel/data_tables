@@ -95,7 +95,6 @@ colnames(dt)
 head(dt, 2)
 ```
 
-
 Code example: Select
 ========================================================
 ## data.tables 

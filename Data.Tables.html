@@ -831,18 +831,18 @@ The main goal is to make the process overall faster and use the resources more e
 <li>Memory efficiency -&gt; no duplicates</li>
 </ul>
 
+
+</div>
+
+<div class="column column2 slideContent" >
+
+
 <h2>Disadvantages</h2>
 
 <ul>
 <li>Unintelligible syntax -&gt;  partly because of the compact code.</li>
 <li>(No duplicates)</li>
 </ul>
-
-
-</div>
-
-<div class="column column2 slideContent" >
-
 
 <h2>Benchmark</h2>
 
@@ -927,7 +927,7 @@ The main goal is to make the process overall faster and use the resources more e
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>Data Lichess</h3>
+<h3>Data Lichess &#x2F; 20,058 Games</h3>
 <div class="slideContent" >
 <pre><code class="r">library(data.table)
 library(dbplyr)
@@ -1105,13 +1105,30 @@ colnames(dt)
 </tr>
 </tbody></table>
 
-<pre><code>processing file: Data.Tables.Rpres
-Quitting from lines 184-188 (Data.Tables.Rpres) 
-Fehler in `[.data.table`(dt[, lapply(.SD, mean), by = opening_name, .SDcols = c(&quot;white_rating&quot;,  : 
-  unbenutztes Argument (delta = white_rating - black_rating)
-Ruft auf: knit ... withCallingHandlers -&gt; withVisible -&gt; eval -&gt; eval -&gt; [
-Ausführung angehalten
+<pre><code>                                                    opening_name
+1:               Russian Game: Modern Attack |  Murrey Variation
+2:                Queen&#39;s Gambit Declined: Westphalian Variation
+3:   Tarrasch Defense: Classical Variation |  Carlsbad Variation
+4:                        Gruenfeld Defense: Botvinnik Variation
+5: English Opening: Anglo-Indian Defense |  Old Indian Formation
+   white_rating black_rating delta
+1:         2621         1613  1008
+2:         2619         1927   692
+3:         2586         1618   968
+4:         2485         1802   683
+5:         2454         1848   606
 </code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>conclusion &amp; Questions</h3>
+<div class="slideContent" >
+<ul>
+<li>Useful library and its compatible with data.frames and many other libraries.</li>
+<li>Brackets &gt; pipes (personal opinion)</li>
+</ul>
 
 </div>
 

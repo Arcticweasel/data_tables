@@ -186,7 +186,7 @@ dt_chess <- dt[, lapply(.SD, mean), .SDcols = columnList]  | df_chess <- df %>% 
 ```
 Code example: Different operation at once
 ========================================================
-data.tables | dplyer
+data.tables | dplyr
 ------------- | -------------
 dt[rated == TRUE, list('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))] | df %>% filter(rated == TRUE)  %>% summarise('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))
 
@@ -198,7 +198,7 @@ dt[rated == TRUE, list('customMedianWhiteRating' = customMedian(white_rating), '
 
 Code example: Add column
 ========================================================
-data.tables | dplyer
+data.tables | dplyr
 ------------- | -------------
 dt_chess <- dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating", "black_rating")][order(-white_rating)][,'delta' := white_rating - black_rating] | df_chess <- df %>% group_by(opening_name) %>% summarise(white_rating = mean(white_rating), black_rating = mean(black_rating)) %>% arrange(desc(white_rating)) %>% mutate(delta = white_rating - black_rating)
 

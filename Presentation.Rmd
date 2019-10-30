@@ -48,6 +48,7 @@ The main goal is to make the process overall faster and use the resources more e
 ## Benchmark
 
 [![Benchmark](Benchmark.png)](https://h2oai.github.io/db-benchmark/)
+
 Syntax
 =======================================================
 ## Basic
@@ -116,7 +117,7 @@ Code example: Where, select, order
 ========================================================
 ## data.tables
 
-```{r, echo=FALSE}
+```{r}
 dt_chess <- dt[turns <= 70,.(white_id, black_id, winner, turns)][order(-turns)]
 show(dt_chess)
 ```
@@ -130,7 +131,7 @@ Code example: Groupby
 ========================================================
 ## data.tables
 
-```{r, echo=FALSE}
+```{r}
 dt_chess <- dt[, .('count' = .N, 'groupNumber' = .GRP), by = opening_name][order(-count)][order(-count)]
 head(dt_chess, 5)
 ```
@@ -144,7 +145,7 @@ head(df_chess, 5)
 
 Code example: Mean & .SD
 ========================================================
-##data.tables 
+## data.tables 
 
 ```{r}
 columnList <- c("white_rating", "black_rating", "turns")
@@ -180,7 +181,7 @@ customMedian <- function(x){
 dt_chess <- dt[rated == TRUE, list('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))]
 show(dt_chess)
 ```
-## dplyer
+## dplyr
 
 ```{r}
 df %>% filter(rated == TRUE)  %>% summarise('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))
@@ -196,7 +197,7 @@ dt_chess <- dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating
 ```{r}
 show(dt_chess)
 ```
-## dplyer
+## dplyr
 
 ```{r}
 df_chess <- df %>% group_by(opening_name) %>% summarise(white_rating = mean(white_rating), black_rating = mean(black_rating)) %>% arrange(desc(white_rating)) %>% mutate(delta = white_rating - black_rating)

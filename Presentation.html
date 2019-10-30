@@ -511,6 +511,8 @@ df &lt;- read_csv('Data/games.csv')</code></pre>
 <h1>Code example: Where, select, order</h1>
 <section id="data.tables-2" class="level2">
 <h2>data.tables</h2>
+<pre class="r"><code>dt_chess &lt;- dt[turns &lt;= 70,.(white_id, black_id, winner, turns)][order(-turns)]
+show(dt_chess)</code></pre>
 <pre><code>##             white_id          black_id winner turns
 ##     1: hopefullman15           avelez8  black    70
 ##     2:      tohaimr7          isachess  black    70
@@ -547,6 +549,8 @@ df &lt;- read_csv('Data/games.csv')</code></pre>
 <h1>Code example: Groupby</h1>
 <section id="data.tables-3" class="level2">
 <h2>data.tables</h2>
+<pre class="r"><code>dt_chess &lt;- dt[, .('count' = .N, 'groupNumber' = .GRP), by = opening_name][order(-count)][order(-count)]
+head(dt_chess, 5)</code></pre>
 <pre><code>##                        opening_name count groupNumber
 ## 1:             Van't Kruijs Opening   368          11
 ## 2:                 Sicilian Defense   358          29
@@ -570,12 +574,14 @@ head(df_chess, 5)</code></pre>
 </section>
 <section id="code-example-mean-.sd" class="level1">
 <h1>Code example: Mean &amp; .SD</h1>
-<p>##data.tables</p>
+<section id="data.tables-4" class="level2">
+<h2>data.tables</h2>
 <pre class="r"><code>columnList &lt;- c(&quot;white_rating&quot;, &quot;black_rating&quot;, &quot;turns&quot;)
 dt_chess &lt;- dt[, lapply(.SD, mean), .SDcols = columnList]
 show(dt_chess)</code></pre>
 <pre><code>##    white_rating black_rating  turns
 ## 1:     1596.632     1588.832 60.466</code></pre>
+</section>
 <section id="dplyr-3" class="level2">
 <h2>dplyr</h2>
 <pre class="r"><code>df_chess &lt;- df %&gt;% select(columnList) %&gt;% summarise_all(mean)
@@ -601,15 +607,15 @@ show(df_chess)</code></pre>
   return(result)
 }</code></pre>
 </section>
-<section id="data.tables-4" class="level2">
+<section id="data.tables-5" class="level2">
 <h2>data.tables</h2>
 <pre class="r"><code>dt_chess &lt;- dt[rated == TRUE, list('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))]
 show(dt_chess)</code></pre>
 <pre><code>##    customMedianWhiteRating meanWhiteRating
 ## 1:                    1547        1572.363</code></pre>
 </section>
-<section id="dplyer" class="level2">
-<h2>dplyer</h2>
+<section id="dplyr-4" class="level2">
+<h2>dplyr</h2>
 <pre class="r"><code>df %&gt;% filter(rated == TRUE)  %&gt;% summarise('customMedianWhiteRating' = customMedian(white_rating), 'meanWhiteRating' = mean(white_rating))</code></pre>
 <pre><code>## # A tibble: 1 x 2
 ##   customMedianWhiteRating meanWhiteRating
@@ -619,7 +625,7 @@ show(dt_chess)</code></pre>
 </section>
 <section id="code-example-add-column" class="level1">
 <h1>Code example: Add column</h1>
-<section id="data.tables-5" class="level2">
+<section id="data.tables-6" class="level2">
 <h2>data.tables</h2>
 <pre class="r"><code>dt_chess &lt;- dt[, lapply(.SD, mean), by = opening_name, .SDcols = c(&quot;white_rating&quot;, &quot;black_rating&quot;)][order(-white_rating)][,'delta' := white_rating - black_rating]</code></pre>
 <pre class="r"><code>show(dt_chess)</code></pre>
@@ -648,8 +654,8 @@ show(dt_chess)</code></pre>
 ## 1476:       1032.0       1140.0  -108
 ## 1477:        998.0       1016.0   -18</code></pre>
 </section>
-<section id="dplyer-1" class="level2">
-<h2>dplyer</h2>
+<section id="dplyr-5" class="level2">
+<h2>dplyr</h2>
 <pre class="r"><code>df_chess &lt;- df %&gt;% group_by(opening_name) %&gt;% summarise(white_rating = mean(white_rating), black_rating = mean(black_rating)) %&gt;% arrange(desc(white_rating)) %&gt;% mutate(delta = white_rating - black_rating)
 show(df_chess)</code></pre>
 <pre><code>## # A tibble: 1,477 x 4

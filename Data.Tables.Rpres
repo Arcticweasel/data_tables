@@ -182,9 +182,9 @@ data.tables | dplyer
 dt_chess <- dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating", "black_rating")][order(-white_rating)][,'delta' := white_rating - black_rating] | df_chess <- df %>% group_by(opening_name) %>% summarise(white_rating = mean(white_rating), black_rating = mean(black_rating)) %>% arrange(desc(white_rating)) %>% mutate(delta = white_rating - black_rating)
 
 ```{r, echo=FALSE}
-dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating", "black_rating")][order(-white_rating)][,'delta' = white_rating - black_rating]
+dt_chess <- dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating", "black_rating")][order(-white_rating)][,'delta' := white_rating - black_rating]
 
-
+head(dt_chess, 5)
 #df_chess <- df %>% group_by(opening_name) %>% summarise(white_rating = mean(white_rating), black_rating = mean(black_rating)) %>% arrange(desc(white_rating)) %>% mutate(delta = white_rating - black_rating)
 ```
 

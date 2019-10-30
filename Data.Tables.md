@@ -201,13 +201,22 @@ data.tables | dplyer
 dt_chess <- dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating", "black_rating")][order(-white_rating)][,'delta' := white_rating - black_rating] | df_chess <- df %>% group_by(opening_name) %>% summarise(white_rating = mean(white_rating), black_rating = mean(black_rating)) %>% arrange(desc(white_rating)) %>% mutate(delta = white_rating - black_rating)
 
 
-
-
 ```
-processing file: Data.Tables.Rpres
-Quitting from lines 185-189 (Data.Tables.Rpres) 
-Fehler in `[.data.table`(dt[, lapply(.SD, mean), by = opening_name, .SDcols = c("white_rating",  : 
-  unbenutztes Argument (delta = white_rating - black_rating)
-Ruft auf: knit ... withCallingHandlers -> withVisible -> eval -> eval -> [
-Ausführung angehalten
+                                                    opening_name
+1:               Russian Game: Modern Attack |  Murrey Variation
+2:                Queen's Gambit Declined: Westphalian Variation
+3:   Tarrasch Defense: Classical Variation |  Carlsbad Variation
+4:                        Gruenfeld Defense: Botvinnik Variation
+5: English Opening: Anglo-Indian Defense |  Old Indian Formation
+   white_rating black_rating delta
+1:         2621         1613  1008
+2:         2619         1927   692
+3:         2586         1618   968
+4:         2485         1802   683
+5:         2454         1848   606
 ```
+
+conclusion & Questions
+========================================================
+- Useful library and its compatible with data.frames and many other libraries.
+- Brackets > pipes (personal opinion)
